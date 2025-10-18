@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trinity Group of Schools</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <!-- Fixed Header -->
+  <header>
+    <h2 class="logo">Trinity Group of Schools</h2>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#apply">Apply</a></li>
+        <li><a href="#login">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <h1>Welcome to Trinity Group of Schools</h1>
+    <p>Building leaders with knowledge, discipline, and purpose.</p>
+    <a href="#apply" class="btn">Apply Now</a>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about fade-in">
+    <div class="about-box">
+      <h2>About Trinity</h2>
+      <p>
+        Trinity Group of Schools is a leading academic institution focused on
+        excellence, innovation, and moral integrity. Our dedicated teachers and
+        supportive environment help students discover their full potential.
+      </p>
+    </div>
+  </section>
+
+  <!-- Motto & Mission -->
+  <section class="motto-mission fade-in">
+    <div class="motto">
+      <h3>Our Motto</h3>
+      <p>“To Restore Lost Academy”</p>
+    </div>
+    <div class="mission">
+      <h3>Our Mission</h3>
+      <p>
+        To provide quality education that shapes minds, builds character, and
+        prepares students for a successful future.
+      </p>
+    </div>
+  </section>
+
+  <!-- Apply Section -->
+  <section id="apply" class="apply fade-in">
+    <h2>Apply for Admission</h2>
+    <p>Ready to join Trinity Schools? Fill the form below.</p>
+    <button class="btn" id="applyBtn">Apply Now</button>
+
+    <div class="apply-popup" id="applyPopup">
+      <div class="popup-content">
+        <h3>Create Account</h3>
+        <input type="text" id="username" placeholder="Enter username" />
+        <input type="password" id="password" placeholder="Enter password" />
+        <input type="password" id="confirmPassword" placeholder="Confirm password" />
+        <button class="btn" id="signupBtn">Sign Up</button>
+        <button class="close-btn" id="closePopup">Close</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Login Section -->
+  <section id="login" class="login fade-in">
+    <h2>Login</h2>
+    <input type="text" id="loginUser" placeholder="Username" />
+    <input type="password" id="loginPass" placeholder="Password" />
+    <button class="btn" id="loginBtn">Login</button>
+  </section>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <h3>Recent Actions</h3>
+    <ul id="recentList"></ul>
+  </div>
+
+  <!-- Hamburger -->
+  <div class="hamburger" id="hamburger">☰</div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Trinity Group of Schools. All Rights Reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.getElementById('hamburger');
+    const recentList = document.getElementById('recentList');
+
+    hamburger.onclick = () => {
+      sidebar.classList.toggle('open');
+    };
+
+    const links = document.querySelectorAll('a');
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        const text = e.target.textContent;
+        const li = document.createElement('li');
+        li.textContent = text;
+        recentList.appendChild(li);
+      });
+    });
+
+    // Apply popup
+    const applyBtn = document.getElementById('applyBtn');
+    const applyPopup = document.getElementById('applyPopup');
+    const closePopup = document.getElementById('closePopup');
+
+    applyBtn.onclick = () => (applyPopup.style.display = 'flex');
+    closePopup.onclick = () => (applyPopup.style.display = 'none');
+
+    // Signup and login using localStorage
+    const signupBtn = document.getElementById('signupBtn');
+    const loginBtn = document.getElementById('loginBtn');
+
+    signupBtn.onclick = () => {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      const confirm = document.getElementById('confirmPassword').value;
+
+      if (!user || !pass || !confirm) {
+        alert('Fill all fields');
+        return;
+      }
+      if (pass !== confirm) {
+        alert('Passwords do not match');
+        return;
+      }
+      localStorage.setItem(user, pass);
+      alert('Account created successfully!');
+      applyPopup.style.display = 'none';
+    };
+
+    loginBtn.onclick = () => {
+      const user = document.getElementById('loginUser').value;
+      const pass = document.getElementById('loginPass').value;
+
+      if (localStorage.getItem(user) === pass) {
+        alert('Welcome, ' + user + '!');
+      } else {
+        alert('Invalid username or password');
+      }
+    };
+
+    // Fade-in animation
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.2 };
+    const appearOnScroll = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      });
+    }, appearOptions);
+
+    faders.forEach(fader => {
+      appearOnScroll.observe(fader);
+    });
+  </script>
+</body>
+</html>
